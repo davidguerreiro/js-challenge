@@ -1,0 +1,1 @@
+var test = 'Yes this is how I like the editor :)';

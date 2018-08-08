@@ -58,6 +58,30 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+    document.addEventListener( 'keydown', function( event ) {
+        if (event.defaultPrevented) {
+            return;
+        }
+        var elements = [
+            ...document.querySelectorAll('.key'),
+            ...document.querySelectorAll('audio'),
+        ];
+    
+        for( var item of elements ) {
+            if ( item.getAttribute('data-key') == event.keyCode ) {
+                if ( item.nodeName == 'DIV' ) {
+                    item.setAttribute('class', 'key playing');
+                } else {
+                    item.play();
+                }
+            }
+        }
+        // remove key playing animation
+        setTimeout( function(){
+            document.querySelector('.playing').setAttribute('class', 'key' );
+        }, 500);
+        
+    });
 </script>
 
 

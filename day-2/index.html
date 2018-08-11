@@ -102,15 +102,12 @@
       }
 
       state.currentSeconds = state.currentSeconds + ( seconds * 6 );
-      // handSeconds.style.transform = "rotate(" + state.currentSeconds + "deg)";
       rotateHand( handSeconds, state.currentSeconds );
 
       state.currentMinutes = state.currentMinutes + ( minutes * 6 );
-      // handMinutes.style.transform = "rotate(" + state.currentMinutes + "deg)";
       rotateHand( handMinutes, state.currentMinutes );
 
       state.currentHours = state.currentHours + ( hours * 30 );
-      //handHours.style.transform = "rotate(" + state.currentHours + "deg)";
       rotateHand( handHours, state.currentHours );
 
       setInterval( () => {
@@ -133,17 +130,14 @@
       switch( property ) {
         case 'seconds' :
           state.currentSeconds = state.currentSeconds + 6;
-          // handSeconds.style.transform = "rotate(" + state.currentSeconds + "deg)";
           rotateHand( handSeconds, state.currentSeconds );
           break;
         case 'minutes' :
           state.currentMinutes = state.currentMinutes + 6;
-          // handMinutes.style.transform = "rotate(" + state.currentMinutes + "deg)";
           rotateHand( handMinutes, state.currentMinutes );
           break;
         case 'hours' :
           state.currentHours = state.currentHours + 6;
-          // handHours.style.transform = "rotate(" + state.currentHours + "deg)";
           rotateHand( handHours, state.currentHours );
           break;
       }

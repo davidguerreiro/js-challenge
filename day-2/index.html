@@ -148,13 +148,14 @@
     */
     let updateClock = ( timeProperty ) => {
       const time = new Date();
+      let seconds = time.getSeconds();
       updateHand( 'seconds' );
 
-      if ( time.getSeconds() == 0 ) {
+      if ( seconds == 0 ) {
         updateHand( 'minutes' );
       }
 
-      if ( time.getMinutes() == 0 ) {
+      if ( time.getMinutes() == 0 && seconds == 0 ) {
         updateHand( 'hours' );
       }
     };

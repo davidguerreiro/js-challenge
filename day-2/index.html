@@ -63,42 +63,104 @@
       transition: all 0.05s;
       transition-timing-function: cubic-bezier( 0.1, 2.7, 0.58, 1);
     }
+
+    .second-hand {
+      height: 3px;
+    }
+
+    .hour-hand {
+      background-color: white;
+    }
   </style>
 
   <script>
 
-      const time = new Date();
-      const handHours = document.querySelector('.hour-hand');
-      const handMinutes = document.querySelector('.min-hand');
-      const handSeconds = document.querySelector('.second-hand');
+    const time = new Date();
+    const handHours = document.querySelector('.hour-hand');
+    const handMinutes = document.querySelector('.min-hand');
+    const handSeconds = document.querySelector('.second-hand');
 
-      let getComputed = ( value ) => {
-        let computed = window.getComputedStyle(handSeconds);
-        computed =    computed.getPropertyValue("-webkit-transform") ||
-                      computed.getPropertyValue("-moz-transform") ||
-                      computed.getPropertyValue("-ms-transform") ||
-                      computed.getPropertyValue("-o-transform") ||
-                      computed.getPropertyValue("transform") ||
-                      null;
+    let state = {
+          initialRotate : 90,
+          currentSeconds : 90,
+          currentMinutes : 90,
+          currentHours : 90,
+    };
+    
+    /**
+    * Inits the clock at the current time.
+    */
+    let initClock = () => {
+      seconds = time.getSeconds();
+      minutes = time.getMinutes();
+      hours = time.getHours();
 
-        if ( computed == null ) {
-            return;
-        }
-
-        var values = computed.split('(')[1],
-        values = values.split(')')[0],
-        values = values.split(',');
-        let angle = Math.round(Math.asin(values[1]) * (180/Math.PI));
-        console.log(angle);
-
-        // TODO:: Update seconds transform value and then check in minutes and hours have to be updated
+        
+      // fix digital to classic clock.
+      if ( hours >= 12 ) {
+        hours = hours - 12;
       }
 
-      let updateClock = () => {
-          let secsComputed = getComputed( handSeconds );
-      };
-      
-      updateClock();
+      state.currentSeconds = state.currentSeconds + ( seconds * 6 );
+      rotateHand( handSeconds, state.currentSeconds );
+
+      state.currentMinutes = state.currentMinutes + ( minutes * 6 );
+      rotateHand( handMinutes, state.currentMinutes );
+
+      state.currentHours = state.currentHours + ( hours * 30 );
+      rotateHand( handHours, state.currentHours );
+
+      setInterval( () => {
+        updateClock( handSeconds );
+      }, 1000 );
+    };
+    
+    /**
+    * Rotates hand.
+    */
+    let rotateHand = ( element, state ) => {
+      element.style.transform = "rotate(" + state + "deg)";
+    };
+    
+    /**
+    * Updates hand.
+    */
+    let updateHand = ( property ) => {
+        
+      switch( property ) {
+        case 'seconds' :
+          state.currentSeconds = state.currentSeconds + 6;
+          rotateHand( handSeconds, state.currentSeconds );
+          break;
+        case 'minutes' :
+          state.currentMinutes = state.currentMinutes + 6;
+          rotateHand( handMinutes, state.currentMinutes );
+          break;
+        case 'hours' :
+          state.currentHours = state.currentHours + 6;
+          rotateHand( handHours, state.currentHours );
+          break;
+      }
+    };
+    
+    /**
+    * Updates clock.
+    */
+    let updateClock = ( timeProperty ) => {
+      const time = new Date();
+      let seconds = time.getSeconds();
+      updateHand( 'seconds' );
+
+      if ( seconds == 0 ) {
+        updateHand( 'minutes' );
+      }
+
+      if ( time.getMinutes() == 0 && seconds == 0 ) {
+        updateHand( 'hours' );
+      }
+    };
+
+    initClock();
 
   </script>
 </body>
